@@ -1,0 +1,125 @@
+<html>
+  <style type="text/css">
+  html, body, label, input, button {
+    font-size: 22px;
+  }
+  
+  button{
+  	display:inline-block;
+  	width: 100px;
+  	height:100px;
+  	text-align:center;
+  }
+  
+  img{
+  	width:90px;
+  	height:90px;
+  }
+  
+  .blocked{
+  	display: block;
+  	text-align: center;
+  	margin-left: 130px;
+  }
+  .inline{
+  	display: inline;
+  	text-align: center;
+  	margin-left: 50px;
+  	margin-top: 10px;
+  	margin-bottom: 10px;
+  }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+<label id="test_label">Enter game ID:</label>
+
+<input id="gameIdInput">
+
+<button id="connectButton" onclick="connectGame();">Connect!</button>
+
+
+<br><br><br><br>
+
+<script src='https://raw.github.com/x1024/jquery-fastbutton/master/bin/fastbutton.js'></script>
+
+<body class='use-fastclick'>
+<button onclick="turn('up');" class = "blocked"><img src= "a-up.png"></button>
+<button onclick="turn('left');" class = "inline"><img src= "a-left.png"></button>
+<button onclick="turn('right');" class = "inline"><img src= "a-right.png"></button>
+<button onclick="turn('down');" class = "blocked"><img src = "a-down.png"></button>
+</body>
+
+
+<script src="socket.io.js"></script>
+<script>
+
+var COLOURS = [
+  "#F09B99",
+  "#AEF896",
+  "#EDA0FE",
+  "#FDEFA2"
+];
+var _isConnected = false;
+var _gameId = -1;
+var _phoneId = -1;
+
+function connectGame ()
+{
+    var gi = document.getElementById("gameIdInput").value;
+    _gameId = gi;
+
+    GET("/phone/addPhone?gameId="+gi, function (data, success)
+    {
+        console.log("get addphone");
+        console.log(data);
+        if (success && data >= 0)
+        {
+            _phoneId = data;
+            var b = document.getElementById("connectButton");
+            b.style.background = COLOURS[_phoneId];
+        }
+    });
+}
+
+function turn (type)
+{
+    var url = "/phone/sendEvent?gameId="+_gameId+"&phoneId="+_phoneId;
+    url += "&type=" + type;
+    console.log(url);
+    GET(url, function (data, success)
+    {
+        if (success)
+        {
+            console.log("sent left");
+        }
+    });
+}
+    
+
+function GET (url, fn)
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function ()
+    {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+        {
+            var resp = xmlhttp.responseText;
+            fn (resp, true);
+        }
+        else if (xmlhttp.readyState == 4)
+        {
+            // Error
+            console.log("ERROR, DIDNT RECEIVE REQUEST PROPERLY, RETRYING");
+            
+            fn ("ERROR", false);
+        }
+    };
+    
+    // Start the request
+    xmlhttp.open("GET", url ,true);
+    xmlhttp.send();
+}
+</script>
+
+</html>
+

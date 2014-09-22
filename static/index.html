@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<style type="text/css">
+
+img {
+    margin-top: 42px;
+    margin-bottom: 128px;
+}
+
+a { text-decoration: none; }
+.btn {
+    color:black;
+    padding: 22px;
+    font-size: 25px;
+    
+}
+.btn:hover {
+    color:white;
+}
+
+.green {
+    background: #AEF896;
+}
+.purple {
+    background: #EDA0FE;
+}
+
+.bottom-container {
+    color:#555;
+    font-family: "Helvetica-Neue", "Arial", sans-serif;
+    position: absolute;
+    width:100%;
+    bottom:2px;
+    left:0px;
+}
+.small {
+    font-size:12px;
+}
+#names {
+    font-size: 22px;
+}
+
+</style>
+
+</head>
+
+<body>
+<center><a href="/static/game.html"><img src="/static/logo.png"></a>
+
+<br>
+
+<a class="btn green" href="/static/game.html">Launch Game</a>
+<a class="btn purple" href="/static/phone.html">Launch Controller</a>
+
+
+<div class="bottom-container">
+<p class="small">Made during Facebook Hackathon 2014 by</p>
+
+<p id="names">
+Angel, Eric, Jerry, Mary
+</p>
+
+<p>&copy; 2014 sbike.ca</p>
+</div>
+</center>
+
+
+<script type="text/javascript">
+    
+    var p = document.getElementById("names");
+
+    var names = ["<a href='http://jerryyu.ca'>Jerry</a>", "Angel", "Eric", "Mary"];
+    
+    console.log(names);
+    var s = "";
+    for (var i = 0; i < 3; i ++)
+    {
+        var r = Math.floor(Math.random()*names.length);
+        console.log(r);
+        s += names.splice(r, 1) + ", ";
+    }
+    s += names[0];
+
+    p.innerHTML = s;
+
+</script>
+
+
+</body>
+</html>
