@@ -1,0 +1,10 @@
+{
+	"name": "sbike",
+	"description": "Light bike port",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"express": "3.3.7",
+		"socket.io": "x"
+	}
+}
